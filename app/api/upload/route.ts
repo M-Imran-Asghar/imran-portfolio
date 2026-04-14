@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   const formData = await req.formData();
   const file = formData.get("file") as File;

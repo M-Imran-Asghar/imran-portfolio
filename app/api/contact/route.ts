@@ -1,6 +1,8 @@
 import { getDatabase } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export type ContactMessage = {
   name: string;
   email: string;

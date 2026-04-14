@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { findAdminByEmail, updateAdminLastLogin, verifyPassword } from "@/lib/admin-auth";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   const { email, password } = (await req.json()) as { email?: string; password?: string };
 

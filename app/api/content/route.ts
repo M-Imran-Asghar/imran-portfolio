@@ -2,6 +2,8 @@ import { mergeSiteContent, SiteContent } from "@/lib/data";
 import { readContentFromDb, writeContentToDb } from "@/lib/db-store";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const content = await readContentFromDb();
   return NextResponse.json(content);
