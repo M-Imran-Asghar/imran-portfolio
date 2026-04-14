@@ -1,0 +1,122 @@
+{
+  "name": "Imran",
+  "avatar": "/upload_1775796511081.jpg",
+  "socials": {
+    "twitter": "",
+    "facebook": "facebook.com",
+    "instagram": "#",
+    "skype": "test.com",
+    "linkedin": "#"
+  },
+  "heroName": "Alex Smith",
+  "heroBg": "/hero-bg.jpg",
+  "heroRoles": [
+    "Photographer",
+    "Web Designer",
+    "Developer",
+    "Freelancer"
+  ],
+  "aboutPara1": "Hi, I'm Alex Smith — a passionate photographer, web designer, and developer based in New York. I love creating beautiful digital experiences and capturing moments through my lens.",
+  "aboutPara2": "With over 5 years of experience, I specialize in building responsive websites, crafting stunning visuals, and delivering high-quality freelance work for clients worldwide.",
+  "aboutDetails": {
+    "birthday": "1 Jan 1990",
+    "phone": "+1 234 567 890",
+    "city": "New York, USA",
+    "email": "alex@example.com"
+  },
+  "experience": [
+    {
+      "year": "2021 – Present",
+      "role": "Senior Web Developer",
+      "company": "Tech Corp"
+    },
+    {
+      "year": "2018 – 2021",
+      "role": "Freelance Designer",
+      "company": "Self-employed"
+    }
+  ],
+  "skills": [
+    {
+      "name": "HTML/CSS",
+      "pct": 90
+    },
+    {
+      "name": "JavaScript",
+      "pct": 80
+    },
+    {
+      "name": "React / Next.js",
+      "pct": 75
+    },
+    {
+      "name": "Photography",
+      "pct": 85
+    }
+  ],
+  "projects": [
+    {
+      "title": "Brand Identity",
+      "cat": "Design",
+      "image": ""
+    },
+    {
+      "title": "Photography",
+      "cat": "Photo",
+      "image": ""
+    },
+    {
+      "title": "Web App",
+      "cat": "Development",
+      "image": ""
+    },
+    {
+      "title": "Mobile UI",
+      "cat": "Design",
+      "image": ""
+    },
+    {
+      "title": "E-commerce",
+      "cat": "Development",
+      "image": ""
+    },
+    {
+      "title": "Portrait Series",
+      "cat": "Photo",
+      "image": ""
+    }
+  ],
+  "services": [
+    {
+      "title": "Photography",
+      "desc": "Professional photography for events, portraits, and commercial projects."
+    },
+    {
+      "title": "Web Development",
+      "desc": "Modern, responsive websites built with the latest technologies."
+    },
+    {
+      "title": "UI/UX Design",
+      "desc": "Clean and intuitive designs that enhance user experience."
+    },
+    {
+      "title": "App Development",
+      "desc": "Cross-platform mobile applications tailored to your needs."
+    }
+  ],
+  "contactEmail": "alex@example.com",
+  "testimonials": [
+    {
+      "title": "imran",
+      "type": "image",
+      "url": "/upload_1773919384157.jpg",
+      "caption": ""
+    },
+    {
+      "title": "f1040 (1)",
+      "type": "pdf",
+      "url": "/upload_1773919387505.pdf",
+      "caption": ""
+    }
+  ]
+}
