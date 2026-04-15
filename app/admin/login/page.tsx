@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import api from "@/lib/axios";
 
 export default function AdminLogin() {
