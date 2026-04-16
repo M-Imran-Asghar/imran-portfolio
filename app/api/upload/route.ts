@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
 
 export const dynamic = "force-dynamic";
 
@@ -9,18 +7,25 @@ export async function POST(req: Request) {
   const file = formData.get("file") as File;
   if (!file) return NextResponse.json({ error: "No file" }, { status: 400 });
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const ext = file.name.split(".").pop();
-  const filename = `upload_${Date.now()}.${ext}`;
-  const dest = path.join(process.cwd(), "public", filename);
-  await writeFile(dest, buffer);
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME!;
+  const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET!;
 
-  // Detect type
-  const mime = file.type;
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", uploadPreset);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+    method: "POST",
+    body: form,
+  });
+
+  if (!res.ok) return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+
+  const data = await res.json() as { secure_url: string; resource_type: string; format: string };
+
   let type: "image" | "video" | "pdf" = "image";
-  if (mime.startsWith("video/")) type = "video";
-  else if (mime === "application/pdf") type = "pdf";
+  if (data.resource_type === "video") type = "video";
+  else if (data.format === "pdf") type = "pdf";
 
-  return NextResponse.json({ url: `/${filename}`, type });
+  return NextResponse.json({ url: data.secure_url, type });
 }

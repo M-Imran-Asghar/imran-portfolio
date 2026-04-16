@@ -1,8 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import axios from "@/lib/axios";
-import { emptyContent, mergeSiteContent, SiteContent } from "@/lib/data";
+import { readContentFromDb } from "@/lib/db-store";
 import Sidebar from "./components/Sidebar";
 import HomeSection from "./components/HomeSection";
 import AboutSection from "./components/AboutSection";
@@ -12,23 +8,10 @@ import ServicesSection from "./components/ServicesSection";
 import TestimonialsSection from "./components/TestimonialsSection";
 import ContactSection from "./components/ContactSection";
 
-export default function Page() {
-  const [content, setContent] = useState<SiteContent>(emptyContent);
-  const [loading, setLoading] = useState(true);
+export const dynamic = "force-dynamic";
 
-  useEffect(() => {
-    axios.get<SiteContent>("/content")
-      .then((res) => setContent(mergeSiteContent(res.data)))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+export default async function Page() {
+  const content = await readContentFromDb();
 
   return (
     <div className="flex min-h-screen bg-[#0f172a]">

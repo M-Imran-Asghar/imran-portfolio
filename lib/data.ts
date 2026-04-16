@@ -7,6 +7,7 @@ export type SiteContent = {
   heroRoles: string[];
   aboutPara1: string;
   aboutPara2: string;
+  aboutImage: string;
   contactPhone: string;
   contactEmail: string;
   resumePdf: string;
