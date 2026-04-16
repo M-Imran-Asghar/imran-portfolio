@@ -1,4 +1,5 @@
 import { getDatabase } from "@/lib/mongodb";
+import { serverErrorResponse } from "@/lib/api-error";
 import { NextResponse } from "next/server";
 
 export type HomeDocument = {
@@ -24,8 +25,8 @@ export async function GET() {
     const col = await getCollection();
     const doc = await col.findOne({ _id: HOME_ID } as never);
     return NextResponse.json(doc ?? {});
-  } catch {
-    return NextResponse.json({ error: "Failed to load home." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to load home.", error, "Home GET failed:");
   }
 }
 
@@ -45,8 +46,8 @@ export async function POST(req: Request) {
     await col.insertOne({ _id: HOME_ID, ...body } as never);
     const doc = await col.findOne({ _id: HOME_ID } as never);
     return NextResponse.json(doc, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Failed to create home." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to create home.", error, "Home POST failed:");
   }
 }
 
@@ -66,7 +67,7 @@ export async function PUT(req: Request) {
     await col.updateOne({ _id: HOME_ID } as never, { $set: body } as never);
     const doc = await col.findOne({ _id: HOME_ID } as never);
     return NextResponse.json(doc);
-  } catch {
-    return NextResponse.json({ error: "Failed to update home." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to update home.", error, "Home PUT failed:");
   }
 }

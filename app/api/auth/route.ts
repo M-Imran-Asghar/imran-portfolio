@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { serverErrorResponse } from "@/lib/api-error";
 import { findAdminByEmail, updateAdminLastLogin, verifyPassword } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
@@ -22,8 +23,8 @@ export async function POST(req: Request) {
     const res = NextResponse.json({ ok: true, email: admin.email, role: admin.role });
     res.cookies.set("admin_auth", "1", { httpOnly: true, path: "/", maxAge: 60 * 60 * 8 });
     return res;
-  } catch {
-    return NextResponse.json({ error: "Unable to log in right now." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Unable to log in right now.", error, "Auth POST failed:");
   }
 }
 

@@ -1,4 +1,5 @@
 import { getDatabase } from "@/lib/mongodb";
+import { serverErrorResponse } from "@/lib/api-error";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -27,8 +28,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: "Failed to send message." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to send message.", error, "Contact POST failed:");
   }
 }
 
@@ -40,7 +41,7 @@ export async function GET() {
       .sort({ createdAt: -1 })
       .toArray();
     return NextResponse.json(messages);
-  } catch {
-    return NextResponse.json({ error: "Failed to load messages." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to load messages.", error, "Contact GET failed:");
   }
 }

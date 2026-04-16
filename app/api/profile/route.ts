@@ -1,4 +1,5 @@
 import { getDatabase } from "@/lib/mongodb";
+import { serverErrorResponse } from "@/lib/api-error";
 import { NextResponse } from "next/server";
 
 export type ProfileDocument = {
@@ -19,8 +20,8 @@ export async function GET() {
     const col = await getCollection();
     const doc = await col.findOne({ _id: PROFILE_ID } as never);
     return NextResponse.json(doc ?? {});
-  } catch {
-    return NextResponse.json({ error: "Failed to load profile." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to load profile.", error, "Profile GET failed:");
   }
 }
 
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
 
     const updated = await col.findOne({ _id: PROFILE_ID } as never);
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json({ error: "Failed to save profile." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to save profile.", error, "Profile POST failed:");
   }
 }

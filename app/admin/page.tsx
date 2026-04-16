@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import axios from "@/lib/axios";
+import { uploadAssetFromBrowser } from "@/lib/client-upload";
 import { emptyContent, mergeSiteContent, SiteContent } from "@/lib/data";
 
 type Tab = "general" | "home" | "about" | "resume" | "portfolio" | "services" | "contact" | "testimonials" | "messages";
@@ -50,21 +51,14 @@ export default function AdminPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const uploadFile = async (file: File): Promise<string> => {
-    const form = new FormData();
-    form.append("file", file);
-    const { data } = await axios.post<{ url: string }>("/upload", form);
-    return data.url;
-  };
-
   const handleUpload = async (file: File, onDone: (url: string) => void) => {
     setUploading(true);
     setError("");
     try {
-      const url = await uploadFile(file);
+      const { url } = await uploadAssetFromBrowser(file);
       onDone(url);
-    } catch {
-      setError("Upload failed. Please try again.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Upload failed. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -242,6 +236,7 @@ export default function AdminPage() {
 
                   <div className={field}>
                     <label className={lbl}>CV / Resume PDF</label>
+                    <p className="text-gray-500 text-xs mb-2">PDF uploads up to 5 MB are supported.</p>
                     <div className="flex items-center gap-4">
                       {content.resumePdf && (
                         <a href={content.resumePdf} target="_blank" rel="noreferrer" className="text-xs text-cyan-400 hover:underline">View current CV</a>
@@ -416,7 +411,7 @@ export default function AdminPage() {
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h2 className="text-xl font-bold">Testimonials</h2>
-                      <p className="text-gray-500 text-xs mt-1">Upload images, videos, or PDFs</p>
+                      <p className="text-gray-500 text-xs mt-1">Upload images, videos, or PDFs. PDF files can be up to 5 MB.</p>
                     </div>
                     <button
                       onClick={() => openPicker("image/*,video/*,application/pdf", true, async (files) => {
@@ -425,14 +420,12 @@ export default function AdminPage() {
                         try {
                           const uploaded: SiteContent["testimonials"] = [];
                           for (const file of files) {
-                            const form = new FormData();
-                            form.append("file", file);
-                            const { data } = await axios.post<{ url: string; type: "image" | "video" | "pdf" }>("/upload", form);
-                            uploaded.push({ title: file.name.replace(/\.[^.]+$/, ""), type: data.type, url: data.url, caption: "" });
+                            const asset = await uploadAssetFromBrowser(file);
+                            uploaded.push({ title: file.name.replace(/\.[^.]+$/, ""), type: asset.type, url: asset.url, caption: "" });
                           }
                           update({ testimonials: [...(content.testimonials ?? []), ...uploaded] });
-                        } catch {
-                          setError("Upload failed. Please try again.");
+                        } catch (error) {
+                          setError(error instanceof Error ? error.message : "Upload failed. Please try again.");
                         } finally {
                           setUploading(false);
                         }

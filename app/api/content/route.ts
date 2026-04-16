@@ -1,4 +1,5 @@
 import { mergeSiteContent, SiteContent } from "@/lib/data";
+import { serverErrorResponse } from "@/lib/api-error";
 import { readContentFromDb, writeContentToDb } from "@/lib/db-store";
 import { NextResponse } from "next/server";
 
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
     const next = mergeSiteContent(body);
     await writeContentToDb(next);
     return NextResponse.json(next);
-  } catch {
-    return NextResponse.json({ error: "Failed to save content." }, { status: 500 });
+  } catch (error) {
+    return serverErrorResponse("Failed to save content.", error, "Content POST failed:");
   }
 }
