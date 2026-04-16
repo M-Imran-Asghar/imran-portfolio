@@ -29,6 +29,7 @@ export const emptyContent: SiteContent = {
   heroRoles: [],
   aboutPara1: "",
   aboutPara2: "",
+  aboutImage: "",
   contactPhone: "",
   contactEmail: "",
   resumePdf: "",
